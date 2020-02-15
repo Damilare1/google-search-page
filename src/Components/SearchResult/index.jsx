@@ -8,9 +8,9 @@ const Result = ({title, text, links, mainLink, dir}) => (
     <p>{text}</p>
     <div style={{ color: "#1a0dab"}} className="font-medium flex w-full">
         { links && links.length > 0 ? links.map( (link, index) =>
-            (<>
+            (<div key={link.title}>
             <a className="hover:underline" href={link.link}>‎{link.title} </a> <span className={`${index !== links.length-1? 'mx-2' : 'hidden'}`}>&#183;</span>
-            </>)
+            </div>)
         ):''}
     </div>
  </div> 

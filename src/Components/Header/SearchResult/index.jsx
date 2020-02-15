@@ -9,12 +9,7 @@ import results from '../../../data/results';
 const Header = ({query, loadResults, loadQuery}) => {
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [ queryStr, setQueryStr ] = useState(query);
-    const [suggestions, setSuggestions] = useState(false);
-
-    const clearInput = () => {
-        setQueryStr('');
-        setShowSuggestions();
-    }
+    const [suggestions, setSuggestions] = useState([]);
 
     const handleChange = (e) => {
         const {value} = e.target;
@@ -49,8 +44,8 @@ const Header = ({query, loadResults, loadQuery}) => {
             <span  className="mic"/>
         </div>
         <div style={{top:"3rem"}} className={`${showSuggestions ? "w-full absolute rounded-b-lg border-b border-l border-r bg-white w-1/2" : "hidden"}`}>
-           {results.filter(result => result.text.match(new RegExp(query, 'gi'))).slice(0,3).map( result => (
-               <div className="w-full flex justify-center items-center px-2">
+           {suggestions.length > 0 && suggestions.map( result => (
+               <div className="w-full flex justify-center items-center px-2" key={result.title}>
                <span className=""><img className="w-5" src={Search} alt="" /></span>
                <p className="w-4/5 mx-1 p-2 truncate">{result.title}</p>
                <span className="text-grey-600">remove</span>
