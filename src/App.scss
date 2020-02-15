@@ -1,0 +1,13 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+.mic{
+  background: url(//www.gstatic.com/images/branding/googlemic/2x/googlemic_color_24dp.png) 0 0 no-repeat;
+  background-size: 24px;
+  height: 24px;
+  width: 24px;
+  vertical-align: middle;
+}

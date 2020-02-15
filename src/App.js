@@ -1,25 +1,65 @@
 import React from 'react';
-import logo from './logo.svg';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import thunkMiddleware from 'redux-thunk';
+import promiseMiddleware from 'redux-promise';
+import { createLogger } from 'redux-logger';
+import { persistStore, persistReducer } from 'redux-persist';
+import { PersistGate } from 'redux-persist/lib/integration/react';
+import storage from 'redux-persist/lib/storage';
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
+import Home from './Pages/Home';
+import SearchResult from './Pages/SearchResult';
+import reducers from './reducers';
 import './App.css';
 
 function App() {
+  const persistConfig = {
+    key: 'root',
+    storage,
+    stateReconciler: autoMergeLevel2, // see "Merge Process" section for details.
+  };
+  
+  const pReducer = persistReducer(persistConfig, reducers);
+  
+  
+  const loggerMiddleware = createLogger();
+  // const preloadedState = window.INITIAL_STATE;
+  
+  // Logger Operation should be halted in live environment.
+  let middleware = [promiseMiddleware, thunkMiddleware];
+  if (process.env.NODE_ENV !== 'production') {
+    middleware = [...middleware, loggerMiddleware];
+  }
+  
+  const store = createStore(pReducer, applyMiddleware(...middleware));
+  
+  const persistor = persistStore(store);
+
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <Router>
+            <Switch>
+              <Route path="/search">
+                <SearchResult />
+                </Route>
+                <Route path="/">
+                  <Home />
+               </Route>
+            </Switch>
+        </Router>
+      </PersistGate>
+    </Provider>
+    </>
   );
 }
 
