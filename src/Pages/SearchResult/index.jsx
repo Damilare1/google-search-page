@@ -1,9 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import Header from '../../Components/Header/SearchResult';
 import Navigation from '../../Components/Header/SearchResult/Navigation';
 import Result from '../../Components/SearchResult';
-import ResultsList from '../../data/results';
 import LocationFooter from '../../Components/Footer/SearchResultFooter/LocationFooter';
 import MenuFooter from '../../Components/Footer/SearchResultFooter/MenuFooter';
 
@@ -18,7 +17,7 @@ const SearchResult = ({ results }) => {
                 <div>
                         {
                            results && results.length > 0 && results.map((result) => (
-                                <Result { ...result }/>
+                                <Result { ...result } key={result.title}/>
                             ))
                         }
                 </div>

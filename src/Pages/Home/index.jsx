@@ -10,7 +10,7 @@ import results from '../../data/results';
 
 const Home = ({loadQuery, loadResults}) => {
     const [showSuggestions, setShowSuggestions] = useState(false);
-    const [suggestions, setSuggestions] = useState(false);
+    const [suggestions, setSuggestions] = useState([]);
     const [query, setQuery] = useState('');
     const handleChange = (e) => {
         const {value} = e.target;
@@ -54,8 +54,8 @@ const Home = ({loadQuery, loadResults}) => {
             {showSuggestions ? <button onClick={clearInput} style={{ left: '2rem' }} className=""><img className="w-5" src={Close} alt="" /></button> : <span style={{ right: '2rem' }} className="mic"/>}
         </div>
         <div style={{ top: "4rem" }} className={`${showSuggestions ? "rounded-b-lg border-b border-l border-r bg-white w-full absolute" : "hidden"}`}>
-           {results.filter(result => result.text.match(new RegExp(query, 'gi'))).slice(0,3).map( result => (
-               <div className="w-full flex justify-center items-center px-2">
+           {suggestions.length > 0 && suggestions.map( result => (
+               <div className="w-full flex justify-center items-center px-2" key={result.title}>
                <span className=""><img className="w-5" src={Search} alt="" /></span>
                <p className="w-4/5 mx-1 p-2 truncate">{result.title}</p>
                <span className="text-grey-600">remove</span>
